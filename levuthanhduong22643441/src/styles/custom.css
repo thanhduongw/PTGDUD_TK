@@ -1,0 +1,169 @@
+/* Custom styling for Product Management App */
+
+/* General styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .app-container {
+    padding-bottom: 2rem;
+  }
+  
+  /* Header styling */
+  .app-header {
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .app-header h1 {
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  /* Card styling */
+  .card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+  }
+  
+  .stats-card {
+    transition: transform 0.3s;
+  }
+  
+  .stats-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Form styling */
+  .form-label {
+    font-weight: 500;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-color: #86b7fe;
+  }
+  
+  /* Button styling */
+  .btn {
+    font-weight: 500;
+    border-radius: 0.35rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(to right, #4b6cb7, #182848);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, #3b5998, #192841);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-danger {
+    background: linear-gradient(to right, #ed213a, #93291e);
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background: linear-gradient(to right, #c82333, #8b211a);
+  }
+  
+  /* Table styling */
+  .table {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  thead.table-dark th {
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem 0.75rem;
+  }
+  
+  .table tbody tr {
+    transition: background-color 0.2s;
+  }
+  
+  .table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+  }
+  
+  /* Product item hover effect */
+  .product-row {
+    transition: all 0.2s ease;
+  }
+  
+  .product-row:hover {
+    background-color: rgba(0, 123, 255, 0.05) !important;
+    transform: scale(1.01);
+  }
+  
+  /* Alert styling */
+  .alert {
+    border-radius: 0.5rem;
+    border: none;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  /* Search and filter controls */
+  .search-filter-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+  
+  .empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  /* Footer */
+  .app-footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    color: #6c757d;
+  }
