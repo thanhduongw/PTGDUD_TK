@@ -12,8 +12,9 @@ const ProductList = () => {
     { id: 5, name: 'Tai nghe không dây', price: 500000, category: 'Công nghệ', stock: 10 }
   ];
 
-  // State to store products
+  // State for products and search term
   const [products, setProducts] = useState(initialProducts);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Function to add a new product
   const handleAddProduct = (newProduct) => {
@@ -22,13 +23,21 @@ const ProductList = () => {
 
   // Function to delete a product
   const handleDeleteProduct = (productId) => {
-    // Show confirmation dialog
     if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
-      // Filter out the product with the given ID
       const updatedProducts = products.filter(product => product.id !== productId);
       setProducts(updatedProducts);
     }
   };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filter products based on search term
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container mt-4">
@@ -37,8 +46,26 @@ const ProductList = () => {
       {/* Add Product Form Component */}
       <ProductForm onAddProduct={handleAddProduct} />
       
+      {/* Search Bar */}
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <div className="input-group">
+            <input 
+              type="text" 
+              className="form-control" 
+              placeholder="Tìm kiếm theo tên sản phẩm..." 
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <button className="btn btn-outline-secondary" type="button">
+              <i className="bi bi-search"></i> Tìm kiếm
+            </button>
+          </div>
+        </div>
+      </div>
+      
       {/* Product List Table */}
-      <h3>Danh sách sản phẩm</h3>
+      <h3>Danh sách sản phẩm {searchTerm && `(Kết quả tìm kiếm cho "${searchTerm}")`}</h3>
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
@@ -51,12 +78,14 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <tr>
-              <td colSpan="6" className="text-center">Không có sản phẩm nào</td>
+              <td colSpan="6" className="text-center">
+                {searchTerm ? "Không tìm thấy sản phẩm phù hợp" : "Không có sản phẩm nào"}
+              </td>
             </tr>
           ) : (
-            products.map((product, index) => (
+            filteredProducts.map((product, index) => (
               <tr key={product.id}>
                 <td>{index + 1}</td>
                 <td>{product.name}</td>
