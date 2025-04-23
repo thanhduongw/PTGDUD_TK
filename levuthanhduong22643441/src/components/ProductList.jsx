@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductForm from './ProductForm';
+import ProductItem from './ProductItem';
 
 const ProductList = () => {
   // Initial sample product data
@@ -44,7 +45,6 @@ const ProductList = () => {
   const handleAddProduct = (newProduct) => {
     const updatedProducts = [...products, newProduct];
     setProducts(updatedProducts);
-    // localStorage.setItem('products', JSON.stringify(updatedProducts)); // Not needed due to useEffect
   };
 
   // Function to delete a product
@@ -52,7 +52,6 @@ const ProductList = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
       const updatedProducts = products.filter(product => product.id !== productId);
       setProducts(updatedProducts);
-      // localStorage.setItem('products', JSON.stringify(updatedProducts)); // Not needed due to useEffect
     }
   };
 
@@ -203,21 +202,12 @@ const ProductList = () => {
             </tr>
           ) : (
             filteredProducts.map((product, index) => (
-              <tr key={product.id}>
-                <td>{index + 1}</td>
-                <td>{product.name}</td>
-                <td>{product.price.toLocaleString('vi-VN')} đ</td>
-                <td>{product.category}</td>
-                <td>{product.stock}</td>
-                <td>
-                  <button 
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteProduct(product.id)}
-                  >
-                    Xoá
-                  </button>
-                </td>
-              </tr>
+              <ProductItem
+                key={product.id}
+                product={product}
+                index={index}
+                onDelete={handleDeleteProduct}
+              />
             ))
           )}
         </tbody>
