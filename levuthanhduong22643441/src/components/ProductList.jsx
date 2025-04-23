@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ProductForm from './ProductForm';
 
 const ProductList = () => {
-  const sampleProducts = [
+  // Initial sample product data
+  const initialProducts = [
     { id: 1, name: 'Áo thun nam', price: 250000, category: 'Thời trang', stock: 15 },
     { id: 2, name: 'Laptop Asus', price: 15000000, category: 'Công nghệ', stock: 8 },
     { id: 3, name: 'Nồi cơm điện', price: 800000, category: 'Gia dụng', stock: 12 },
@@ -10,10 +12,23 @@ const ProductList = () => {
     { id: 5, name: 'Tai nghe không dây', price: 500000, category: 'Công nghệ', stock: 10 }
   ];
 
+  // State to store products
+  const [products, setProducts] = useState(initialProducts);
+
+  // Function to add a new product
+  const handleAddProduct = (newProduct) => {
+    setProducts([...products, newProduct]);
+  };
+
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Danh sách sản phẩm</h2>
+      <h2 className="mb-4">Quản lý Sản Phẩm</h2>
       
+      {/* Add Product Form Component */}
+      <ProductForm onAddProduct={handleAddProduct} />
+      
+      {/* Product List Table */}
+      <h3>Danh sách sản phẩm</h3>
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
@@ -26,7 +41,7 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {sampleProducts.map((product, index) => (
+          {products.map((product, index) => (
             <tr key={product.id}>
               <td>{index + 1}</td>
               <td>{product.name}</td>
