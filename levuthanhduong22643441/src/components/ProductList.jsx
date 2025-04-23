@@ -20,6 +20,16 @@ const ProductList = () => {
     setProducts([...products, newProduct]);
   };
 
+  // Function to delete a product
+  const handleDeleteProduct = (productId) => {
+    // Show confirmation dialog
+    if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+      // Filter out the product with the given ID
+      const updatedProducts = products.filter(product => product.id !== productId);
+      setProducts(updatedProducts);
+    }
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Quản lý Sản Phẩm</h2>
@@ -41,18 +51,29 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={product.id}>
-              <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>{product.price.toLocaleString('vi-VN')} đ</td>
-              <td>{product.category}</td>
-              <td>{product.stock}</td>
-              <td>
-                <button className="btn btn-danger btn-sm">Xoá</button>
-              </td>
+          {products.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="text-center">Không có sản phẩm nào</td>
             </tr>
-          ))}
+          ) : (
+            products.map((product, index) => (
+              <tr key={product.id}>
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>{product.price.toLocaleString('vi-VN')} đ</td>
+                <td>{product.category}</td>
+                <td>{product.stock}</td>
+                <td>
+                  <button 
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
+                    Xoá
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
