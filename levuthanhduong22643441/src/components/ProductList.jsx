@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductForm from './ProductForm';
 
@@ -12,9 +12,19 @@ const ProductList = () => {
     { id: 5, name: 'Tai nghe không dây', price: 500000, category: 'Công nghệ', stock: 10 }
   ];
 
-  // State for products and search term
+  // State for products, search term, and category filter
   const [products, setProducts] = useState(initialProducts);
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  
+  // Extract unique categories from products
+  const [categories, setCategories] = useState([]);
+  
+  // Update categories whenever products change
+  useEffect(() => {
+    const uniqueCategories = [...new Set(products.map(product => product.category))];
+    setCategories(uniqueCategories);
+  }, [products]);
 
   // Function to add a new product
   const handleAddProduct = (newProduct) => {
@@ -33,11 +43,18 @@ const ProductList = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+  
+  // Handle category filter change
+  const handleCategoryChange = (e) => {
+    setCategoryFilter(e.target.value);
+  };
 
-  // Filter products based on search term
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter products based on search term and category
+  const filteredProducts = products.filter(product => {
+    const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === '' || product.category === categoryFilter;
+    return matchesSearchTerm && matchesCategory;
+  });
 
   return (
     <div className="container mt-4">
@@ -46,9 +63,10 @@ const ProductList = () => {
       {/* Add Product Form Component */}
       <ProductForm onAddProduct={handleAddProduct} />
       
-      {/* Search Bar */}
-      <div className="row mb-3">
+      {/* Search and Filter Bar */}
+      <div className="row mb-3 align-items-end">
         <div className="col-md-6">
+          <label className="form-label">Tìm kiếm</label>
           <div className="input-group">
             <input 
               type="text" 
@@ -62,10 +80,39 @@ const ProductList = () => {
             </button>
           </div>
         </div>
+        <div className="col-md-4">
+          <label htmlFor="categoryFilter" className="form-label">Lọc theo danh mục</label>
+          <select 
+            className="form-select" 
+            id="categoryFilter"
+            value={categoryFilter}
+            onChange={handleCategoryChange}
+          >
+            <option value="">Tất cả danh mục</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-2">
+          <button 
+            className="btn btn-secondary w-100" 
+            onClick={() => {
+              setSearchTerm('');
+              setCategoryFilter('');
+            }}
+          >
+            Xóa bộ lọc
+          </button>
+        </div>
       </div>
       
       {/* Product List Table */}
-      <h3>Danh sách sản phẩm {searchTerm && `(Kết quả tìm kiếm cho "${searchTerm}")`}</h3>
+      <h3>
+        Danh sách sản phẩm 
+        {searchTerm && ` (Tìm kiếm: "${searchTerm}")`}
+        {categoryFilter && ` (Danh mục: ${categoryFilter})`}
+      </h3>
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
@@ -81,7 +128,7 @@ const ProductList = () => {
           {filteredProducts.length === 0 ? (
             <tr>
               <td colSpan="6" className="text-center">
-                {searchTerm ? "Không tìm thấy sản phẩm phù hợp" : "Không có sản phẩm nào"}
+                {searchTerm || categoryFilter ? "Không tìm thấy sản phẩm phù hợp" : "Không có sản phẩm nào"}
               </td>
             </tr>
           ) : (
