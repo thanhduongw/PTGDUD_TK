@@ -55,6 +55,14 @@ const ProductList = () => {
     const matchesCategory = categoryFilter === '' || product.category === categoryFilter;
     return matchesSearchTerm && matchesCategory;
   });
+  
+  // Calculate total products and stock
+  const totalProducts = products.length;
+  const totalStock = products.reduce((sum, product) => sum + product.stock, 0);
+  
+  // Calculate total products and stock for filtered products
+  const filteredTotalProducts = filteredProducts.length;
+  const filteredTotalStock = filteredProducts.reduce((sum, product) => sum + product.stock, 0);
 
   return (
     <div className="container mt-4">
@@ -62,6 +70,20 @@ const ProductList = () => {
       
       {/* Add Product Form Component */}
       <ProductForm onAddProduct={handleAddProduct} />
+      
+      {/* Product Statistics */}
+      <div className="card mb-4">
+        <div className="card-body bg-light">
+          <div className="row">
+            <div className="col-md-6">
+              <h5>Tổng số sản phẩm: <span className="badge bg-primary">{totalProducts}</span></h5>
+            </div>
+            <div className="col-md-6">
+              <h5>Tổng tồn kho: <span className="badge bg-success">{totalStock}</span></h5>
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* Search and Filter Bar */}
       <div className="row mb-3 align-items-end">
@@ -113,6 +135,15 @@ const ProductList = () => {
         {searchTerm && ` (Tìm kiếm: "${searchTerm}")`}
         {categoryFilter && ` (Danh mục: ${categoryFilter})`}
       </h3>
+      
+      {/* Filter statistics */}
+      {(searchTerm || categoryFilter) && (
+        <div className="alert alert-info">
+          Kết quả lọc: <strong>{filteredTotalProducts}</strong> sản phẩm | 
+          Tổng tồn kho (đã lọc): <strong>{filteredTotalStock}</strong>
+        </div>
+      )}
+      
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
@@ -151,6 +182,13 @@ const ProductList = () => {
             ))
           )}
         </tbody>
+        <tfoot className="table-secondary">
+          <tr>
+            <td colSpan="4" className="text-end fw-bold">Tổng số:</td>
+            <td className="fw-bold">{filteredTotalStock}</td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
