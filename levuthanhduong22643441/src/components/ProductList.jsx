@@ -12,8 +12,17 @@ const ProductList = () => {
     { id: 5, name: 'Tai nghe không dây', price: 500000, category: 'Công nghệ', stock: 10 }
   ];
 
+  // Load products from localStorage or use initial data if none exists
+  const loadProductsFromStorage = () => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      return JSON.parse(storedProducts);
+    }
+    return initialProducts;
+  };
+
   // State for products, search term, and category filter
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState(loadProductsFromStorage);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   
@@ -25,10 +34,17 @@ const ProductList = () => {
     const uniqueCategories = [...new Set(products.map(product => product.category))];
     setCategories(uniqueCategories);
   }, [products]);
+  
+  // Save products to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
 
   // Function to add a new product
   const handleAddProduct = (newProduct) => {
-    setProducts([...products, newProduct]);
+    const updatedProducts = [...products, newProduct];
+    setProducts(updatedProducts);
+    // localStorage.setItem('products', JSON.stringify(updatedProducts)); // Not needed due to useEffect
   };
 
   // Function to delete a product
@@ -36,6 +52,7 @@ const ProductList = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
       const updatedProducts = products.filter(product => product.id !== productId);
       setProducts(updatedProducts);
+      // localStorage.setItem('products', JSON.stringify(updatedProducts)); // Not needed due to useEffect
     }
   };
 
@@ -47,6 +64,13 @@ const ProductList = () => {
   // Handle category filter change
   const handleCategoryChange = (e) => {
     setCategoryFilter(e.target.value);
+  };
+
+  // Reset to initial sample data
+  const resetToSampleData = () => {
+    if (window.confirm('Bạn có chắc chắn muốn khôi phục dữ liệu mẫu? Dữ liệu hiện tại sẽ bị mất.')) {
+      setProducts(initialProducts);
+    }
   };
 
   // Filter products based on search term and category
@@ -87,7 +111,7 @@ const ProductList = () => {
       
       {/* Search and Filter Bar */}
       <div className="row mb-3 align-items-end">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <label className="form-label">Tìm kiếm</label>
           <div className="input-group">
             <input 
@@ -116,17 +140,32 @@ const ProductList = () => {
             ))}
           </select>
         </div>
-        <div className="col-md-2">
-          <button 
-            className="btn btn-secondary w-100" 
-            onClick={() => {
-              setSearchTerm('');
-              setCategoryFilter('');
-            }}
-          >
-            Xóa bộ lọc
-          </button>
+        <div className="col-md-3">
+          <div className="d-flex gap-2">
+            <button 
+              className="btn btn-secondary flex-grow-1" 
+              onClick={() => {
+                setSearchTerm('');
+                setCategoryFilter('');
+              }}
+            >
+              Xóa bộ lọc
+            </button>
+            <button 
+              className="btn btn-outline-warning" 
+              onClick={resetToSampleData}
+              title="Khôi phục dữ liệu mẫu ban đầu"
+            >
+              <i className="bi bi-arrow-repeat"></i>
+            </button>
+          </div>
         </div>
+      </div>
+      
+      {/* Storage status indicator */}
+      <div className="alert alert-success mb-3">
+        <i className="bi bi-check-circle-fill me-2"></i>
+        Dữ liệu sản phẩm được lưu tự động vào localStorage
       </div>
       
       {/* Product List Table */}
